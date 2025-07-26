@@ -1,3 +1,5 @@
+## Installation
+
 1. Clone the repository:
    git clone https://github.com/SangameshSJ/Travel_Weather_Planner.git
 
@@ -29,5 +31,3 @@ A responsive weather application that helps travelers plan trips based on weathe
   - Network Information API
   - Background Tasks API
   - Intersection Observer API
-
-## Installation
