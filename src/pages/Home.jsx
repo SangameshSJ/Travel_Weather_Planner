@@ -7,6 +7,7 @@ import RecommendationCard from '../components/RecommendationCard';
 import NetworkStatus from '../components/NetworkStatus';
 import useGeolocation from '../hooks/useGeolocation';
 import useNetworkStatus from '../hooks/useNetworkStatus';
+import { getCurrentWeather } from '../services/weatherService';
 
 const Home = () => {
   const { 
@@ -26,7 +27,7 @@ const Home = () => {
   useGeolocation();
   useNetworkStatus();
 
-  // Load current location weather when available
+
   useEffect(() => {
     if (currentLocation && !currentWeather && !isLoading) {
       const fetchWeather = async () => {
@@ -48,66 +49,66 @@ const Home = () => {
       setCurrentWeather(cachedData.current);
     }
     
-    if (!networkStatus?.online && destination && cachedData.forecasts[destination] && forecast.length === 0) {
+  
+    if (!networkStatus?.online && destination && cachedData?.forecasts?.[destination] && forecast?.length === 0) {
       setForecast(cachedData.forecasts[destination]);
     }
   }, [networkStatus, cachedData, currentWeather, forecast, setCurrentWeather, setForecast]);
 
+  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-100 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <header className="text-center mb-12">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <header className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800 mb-2">Travel Weather Planner</h1>
-          <p className="text-gray-600">Plan your trip with confidence using real-time weather insights</p>
+          <p className="text-lg text-gray-600">Plan your trip with confidence using real-time weather insights</p>
         </header>
-        
-        <LocationInput />
-        
-        <div className="grid grid-cols-1 gap-6 mb-8">
-          {currentWeather && (
-            <WeatherCard weather={currentWeather} isCurrent={true} />
-          )}
+
+        {/* Search and Current Weather */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <div className="lg:col-span-1">
+            <LocationInput />
+          </div>
           
-          {isLoading && (
-            <div className="bg-white rounded-xl shadow-lg p-6 flex justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          {currentWeather && (
+            <div className="lg:col-span-2">
+              <WeatherCard weather={currentWeather} isCurrent={true} />
             </div>
           )}
-          
-          {forecast.length > 0 && (
-            <>
-              <ForecastChart forecast={forecast} />
-              
-              {recommendations.length > 0 && (
-                <div className="bg-white rounded-xl shadow-lg p-6">
-                  <h3 className="text-xl font-bold mb-4">Travel Recommendations</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {recommendations.map((rec, index) => (
-                      <RecommendationCard 
-                        key={index} 
-                        recommendation={rec} 
-                        index={index} 
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </>
-          )}
         </div>
-        
+
+        {/* Forecast and Recommendations */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            {forecast.length > 0 && <ForecastChart forecast={forecast} />}
+          </div>
+          
+          <div className="lg:col-span-1">
+            {recommendations.length > 0 && (
+              <div className="bg-white rounded-xl shadow-lg p-6 h-full">
+                <h3 className="text-xl font-bold mb-4">Travel Recommendations</h3>
+                <div className="space-y-4">
+                  {recommendations.map((rec, index) => (
+                    <RecommendationCard key={index} recommendation={rec} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Footer */}
         <footer className="text-center text-gray-600 mt-12">
-          <p>Travel Weather Planner &copy; {new Date().getFullYear()}</p>
-          <p className="text-sm mt-2">Using Geolocation, Network Information, Background Tasks, Canvas, and Intersection Observer APIs</p>
+          <p className="text-sm">Travel Weather Planner &copy; {new Date().getFullYear()}</p>
+          <p className="text-xs mt-1">Using Geolocation, Network Information, Background Tasks, Canvas, and Intersection Observer APIs</p>
         </footer>
       </div>
-      
-      <NetworkStatus />
     </div>
   );
 };
 
 // Mock functions for demonstration
-const getCurrentWeather = async () => ({});
 
 export default Home;

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef } from 'react';
 import { WeatherContext } from '../context/WeatherContext';
 import useGeolocation from '../hooks/useGeolocation';
+import { getCurrentWeather, getWeatherForecast, getTravelRecommendations } from '../services/weatherService';
 
 const LocationInput = () => {
   const { destination, setDestination, setCurrentWeather, setForecast, 
@@ -109,9 +110,6 @@ const LocationInput = () => {
   );
 };
 
-// Mock functions for demonstration
-const getCurrentWeather = async () => {};
-const getWeatherForecast = async () => [];
-const getTravelRecommendations = () => [];
+
 
 export default LocationInput;

@@ -5,7 +5,7 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
 const ForecastChart = ({ forecast }) => {
   const canvasRef = useRef(null);
-  const { runInBackground } = useBackgroundTask();
+  const { runInBackground, cancelBackgroundTask } = useBackgroundTask(); // Destructure both functions here
   const { networkStatus } = useContext(WeatherContext);
   const [ref, isVisible] = useIntersectionObserver({
     threshold: 0.1,
@@ -139,13 +139,13 @@ const ForecastChart = ({ forecast }) => {
     
     // Use Background Tasks API for smoother rendering on low-power devices
     if (networkStatus?.effectiveType.includes('2g') || 
-      networkStatus?.effectiveType.includes('3g')) {
-    const taskId = runInBackground(drawChart);
-    return () => cancelBackgroundTask(taskId);
-  } else {
-    drawChart();
-  }
-}, [forecast, isVisible, networkStatus, runInBackground, cancelBackgroundTask]);
+        networkStatus?.effectiveType.includes('3g')) {
+      const taskId = runInBackground(drawChart);
+      return () => cancelBackgroundTask(taskId);
+    } else {
+      drawChart();
+    }
+  }, [forecast, isVisible, networkStatus, runInBackground, cancelBackgroundTask]);
 
   if (!forecast.length) return null;
 
@@ -156,13 +156,15 @@ const ForecastChart = ({ forecast }) => {
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}
     >
-      <h3 className="text-xl font-bold mb-4">7-Day Forecast</h3>
-      <canvas 
-        ref={canvasRef} 
-        width="800" 
-        height="400"
-        className="w-full h-64 md:h-80"
-      ></canvas>
+      <h3 className="text-xl font-bold text-gray-800 mb-6">7-Day Forecast</h3>
+      <div className="overflow-x-auto">
+        <canvas 
+          ref={canvasRef} 
+          width="800" 
+          height="400"
+          className="w-full h-64 md:h-80"
+        />
+      </div>
     </div>
   );
 };

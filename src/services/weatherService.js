@@ -1,11 +1,7 @@
-// Mock weather service since we can't use real API keys in this example
-// In a real app, you would use OpenWeatherMap or similar API
-
 export const getCurrentWeather = async (location) => {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 500));
   
-  // Generate mock weather data based on location
   const temperatures = {
     'New York': 22,
     'Paris': 18,
@@ -34,18 +30,6 @@ export const getCurrentWeather = async (location) => {
     icon: ['☀️', '🌧️', '☁️', '🌤️'][Math.floor(Math.random() * 4)]
   };
   return mockData;
-  
-  // return {
-  //   location: location,
-  //   temperature: temperatures[location] || 20 + Math.floor(Math.random() * 15),
-  //   condition: conditions[location] || ['Sunny', 'Cloudy', 'Rainy'][Math.floor(Math.random() * 3)],
-  //   humidity: 40 + Math.floor(Math.random() * 40),
-  //   windSpeed: 5 + Math.floor(Math.random() * 15),
-  //   feelsLike: temperatures[location] ? temperatures[location] - 2 : 18 + Math.floor(Math.random() * 15),
-  //   icon: conditions[location] === 'Sunny' ? '☀️' : 
-  //         conditions[location] === 'Rainy' ? '🌧️' : 
-  //         conditions[location] === 'Cloudy' ? '☁️' : '🌤️'
-  // };
 };
 
 export const getWeatherForecast = async (location) => {

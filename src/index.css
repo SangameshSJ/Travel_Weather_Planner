@@ -32,3 +32,12 @@ code {
 .animate-fadeInUp {
   animation: fadeInUp 0.5s ease-out forwards;
 }
+
+/* Custom components */
+.weather-icon {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.forecast-canvas {
+  min-width: 100%;
+}
